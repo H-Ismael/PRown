@@ -1,0 +1,37 @@
+metadata:
+  policy_id: generic_v1
+  version: 1
+  name: Generic Comprehension Policy
+
+selection:
+  include_paths:
+    - "**/*.py"
+    - "**/*.js"
+    - "**/*.ts"
+    - "**/*.tsx"
+  exclude_paths:
+    - "**/*.md"
+    - "**/docs/**"
+  min_changed_lines: 1
+
+questioning:
+  max_questions: 2
+  types:
+    - behavior_change
+    - risk_identification
+    - invariant_preservation
+  constraints:
+    - avoid trivial wording
+    - avoid style-only questions
+    - anchor in concrete diff behavior
+
+grading:
+  pass_threshold: 0.75
+  min_question_score: 0.50
+  allow_partial_credit: true
+  require_behavioral_grounding: true
+
+feedback:
+  reveal_ideal_answer: true
+  constructive_mode: true
+  generate_reviewer_summary: true

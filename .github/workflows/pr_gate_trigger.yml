@@ -1,0 +1,23 @@
+name: PR Comprehension Gate Trigger
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  start-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger comprehension gate backend
+        env:
+          WEBHOOK_URL: ${{ secrets.PR_GATE_WEBHOOK_URL }}
+          WEBHOOK_SECRET: ${{ secrets.PR_GATE_WEBHOOK_SECRET }}
+          EVENT_PATH: ${{ github.event_path }}
+        run: |
+          body=$(cat "$EVENT_PATH")
+          sig=$(printf '%s' "$body" | openssl dgst -sha256 -hmac "$WEBHOOK_SECRET" | sed 's/^.* //')
+          curl -sS -X POST "$WEBHOOK_URL" \
+            -H "Content-Type: application/json" \
+            -H "X-GitHub-Event: pull_request" \
+            -H "X-Hub-Signature-256: sha256=$sig" \
+            -d "$body"

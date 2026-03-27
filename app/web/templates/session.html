@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PR Comprehension Session</title>
+    <style>
+      :root {
+        --bg: #f4efe6;
+        --ink: #1d1b16;
+        --accent: #1f5c44;
+        --card: #fffdfa;
+      }
+      body {
+        background: radial-gradient(circle at top right, #c6e8d8, var(--bg));
+        color: var(--ink);
+        font-family: "IBM Plex Sans", sans-serif;
+        margin: 0;
+        padding: 1rem;
+      }
+      main {
+        max-width: 860px;
+        margin: 0 auto;
+        background: var(--card);
+        border-radius: 14px;
+        padding: 1.2rem;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      }
+      textarea {
+        width: 100%;
+        min-height: 100px;
+      }
+      button {
+        background: var(--accent);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 0.6rem 1rem;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Session #{{ session.id }}</h1>
+      <p>Status: <strong>{{ session.status }}</strong></p>
+
+      {% if decision %}
+      <section>
+        <h2>Result</h2>
+        <p>Passed: <strong>{{ decision.passed }}</strong></p>
+        <p>Score: <strong>{{ "%.2f" % decision.final_score }}</strong></p>
+        <p>{{ decision.decision_reason }}</p>
+      </section>
+      {% endif %}
+
+      <form method="post" action="/sessions/{{ session.id }}/ui">
+        <input type="hidden" name="submitted_by" value="author" />
+        {% for q in session.questions %}
+        <section>
+          <h3>Q{{ loop.index }} - {{ q.type }}</h3>
+          <p>{{ q.text }}</p>
+          <small>Expected focus: {{ q.expected_focus }}</small>
+          <textarea name="answer_{{ q.question_key }}" required></textarea>
+        </section>
+        {% endfor %}
+        <br />
+        <button type="submit">Submit Answers</button>
+      </form>
+    </main>
+  </body>
+</html>
