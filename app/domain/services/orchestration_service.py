@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -153,14 +155,24 @@ class OrchestrationService:
         passed, final_score, reason = self.decision_service.decide(evaluations, policy)
         reviewer_summary = self.reporting_service.build_reviewer_summary(passed, final_score)
 
-        decision = models.GateDecision(
-            session_id=session.id,
-            final_score=final_score,
-            passed=passed,
-            decision_reason=reason,
-            reviewer_summary=reviewer_summary,
-        )
-        self.db.add(decision)
+        decision = self.db.execute(
+            select(models.GateDecision).where(models.GateDecision.session_id == session.id)
+        ).scalar_one_or_none()
+        if decision:
+            decision.final_score = final_score
+            decision.passed = passed
+            decision.decision_reason = reason
+            decision.reviewer_summary = reviewer_summary
+            decision.decided_at = datetime.utcnow()
+        else:
+            decision = models.GateDecision(
+                session_id=session.id,
+                final_score=final_score,
+                passed=passed,
+                decision_reason=reason,
+                reviewer_summary=reviewer_summary,
+            )
+            self.db.add(decision)
         session.status = "passed" if passed else "failed"
 
         self.db.commit()

@@ -8,10 +8,12 @@ class LLMProvider:
     def __init__(self):
         self.provider = settings.llm_provider
         self.model = settings.llm_model
+        self.api_key = settings.llm_api_key
+        self.api_base = settings.llm_api_base
 
     def generate_questions(self, policy: Policy, diff_summary: dict) -> list[GeneratedQuestion]:
-        if self.provider == "openai" and settings.openai_api_key:
-            return self._generate_questions_openai(policy, diff_summary)
+        if self.provider == "litellm" and self.model:
+            return self._generate_questions_litellm(policy, diff_summary)
         return self._generate_questions_stub(policy, diff_summary)
 
     def evaluate_answer(
@@ -21,8 +23,8 @@ class LLMProvider:
         answer: str,
         diff_summary: dict,
     ) -> EvaluationOut:
-        if self.provider == "openai" and settings.openai_api_key:
-            return self._evaluate_answer_openai(policy, question, answer, diff_summary)
+        if self.provider == "litellm" and self.model:
+            return self._evaluate_answer_litellm(policy, question, answer, diff_summary)
         return self._evaluate_answer_stub(policy, question, answer)
 
     def _generate_questions_stub(self, policy: Policy, diff_summary: dict) -> list[GeneratedQuestion]:
@@ -81,34 +83,26 @@ class LLMProvider:
             ideal_answer=ideal,
         )
 
-    def _generate_questions_openai(self, policy: Policy, diff_summary: dict) -> list[GeneratedQuestion]:
-        from openai import OpenAI
-
-        client = OpenAI(api_key=settings.openai_api_key)
+    def _generate_questions_litellm(self, policy: Policy, diff_summary: dict) -> list[GeneratedQuestion]:
         prompt = {
             "policy": policy.model_dump(),
             "diff_summary": diff_summary,
             "instructions": "Return JSON list with id,text,type,expected_focus. Max 2 questions.",
         }
-        response = client.responses.create(
-            model=self.model,
-            input=[{"role": "user", "content": json.dumps(prompt)}],
-            temperature=0.2,
-        )
-        text = response.output_text
+        text = self._litellm_text_response(json.dumps(prompt), temperature=0.2)
         parsed = json.loads(text)
-        return [GeneratedQuestion.model_validate(x) for x in parsed]
+        if not isinstance(parsed, list):
+            raise ValueError("LLM questions output must be a JSON list")
+        normalized = [self._normalize_generated_question(x, idx) for idx, x in enumerate(parsed, start=1)]
+        return [GeneratedQuestion.model_validate(x) for x in normalized]
 
-    def _evaluate_answer_openai(
+    def _evaluate_answer_litellm(
         self,
         policy: Policy,
         question: GeneratedQuestion,
         answer: str,
         diff_summary: dict,
     ) -> EvaluationOut:
-        from openai import OpenAI
-
-        client = OpenAI(api_key=settings.openai_api_key)
         payload = {
             "policy": policy.model_dump(),
             "question": question.model_dump(),
@@ -119,10 +113,50 @@ class LLMProvider:
                 "missing_points (list), ideal_answer. Use rubric-based grading."
             ),
         }
-        response = client.responses.create(
-            model=self.model,
-            input=[{"role": "user", "content": json.dumps(payload)}],
-            temperature=0,
-        )
-        data = json.loads(response.output_text)
+        text = self._litellm_text_response(json.dumps(payload), temperature=0)
+        data = json.loads(text)
         return EvaluationOut.model_validate(data)
+
+    def _litellm_text_response(self, prompt: str, temperature: float) -> str:
+        from litellm import completion
+
+        completion_response = completion(
+            model=self.model,
+            messages=[{"role": "user", "content": prompt}],
+            temperature=temperature,
+            api_key=self.api_key or None,
+            api_base=self.api_base or None,
+        )
+        content = completion_response.choices[0].message.content or ""
+        return self._strip_markdown_fences(content).strip()
+
+    @staticmethod
+    def _normalize_generated_question(raw: dict, index: int) -> dict:
+        if not isinstance(raw, dict):
+            return {
+                "id": f"q{index}",
+                "text": str(raw),
+                "type": "behavior_change",
+                "expected_focus": "Explain runtime behavior and affected paths.",
+            }
+
+        question_id = raw.get("id", f"q{index}")
+        text = raw.get("text", "")
+        qtype = raw.get("type", "behavior_change")
+        expected_focus = raw.get("expected_focus", "Explain runtime behavior and affected paths.")
+
+        return {
+            "id": str(question_id),
+            "text": str(text),
+            "type": str(qtype),
+            "expected_focus": str(expected_focus),
+        }
+
+    @staticmethod
+    def _strip_markdown_fences(text: str) -> str:
+        text = text.strip()
+        if text.startswith("```") and text.endswith("```"):
+            lines = text.splitlines()
+            if len(lines) >= 3:
+                return "\n".join(lines[1:-1])
+        return text

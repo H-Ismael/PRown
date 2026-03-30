@@ -1,3 +1,5 @@
+import os
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -13,7 +15,8 @@ class Settings(BaseSettings):
 
     llm_provider: str = "stub"
     llm_model: str = "gpt-4o-mini"
-    openai_api_key: str = ""
+    llm_api_key: str = os.getenv("LLM_API_KEY", os.getenv("OPENAI_API_KEY", ""))
+    llm_api_base: str = os.getenv("LLM_API_BASE", "")
 
     policy_dir: str = "policies"
 

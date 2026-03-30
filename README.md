@@ -10,7 +10,7 @@ Quality gate for GitHub pull requests that checks whether the PR author understa
 - loads a versioned policy from YAML (`policies/generic_v1.yaml`)
 - generates 1-2 comprehension questions from the diff
 - provides a minimal answer UI (`/sessions/{id}/ui`)
-- evaluates answers (stub evaluator by default, OpenAI-compatible provider included)
+- evaluates answers (stub evaluator by default, LiteLLM provider included)
 - computes deterministic pass/fail gate decision from policy thresholds
 - posts GitHub check-run + PR comment with constructive feedback and ideal answers
 - stores sessions, questions, answers, evaluations, decisions in Postgres
@@ -57,7 +57,9 @@ cp .env.example .env
 
 - `GITHUB_WEBHOOK_SECRET` (shared secret with GitHub Action/webhook)
 - `GITHUB_TOKEN` (token with checks + PR comment permissions)
-- Optional: `LLM_PROVIDER=openai` and `OPENAI_API_KEY=...`
+- Optional (LiteLLM): `LLM_PROVIDER=litellm`, `LLM_MODEL=<provider/model>`, `LLM_API_KEY=...`
+- Example OpenAI model: `LLM_MODEL=openai/gpt-4o-mini`
+- Example Mistral model: `LLM_MODEL=mistral/mistral-small-latest`
 
 3. Start services:
 
@@ -93,5 +95,5 @@ Then mark `pr-comprehension-gate` as a required status check in branch protectio
 ## Notes
 
 - Default evaluator is deterministic stub logic for local development.
-- OpenAI integration expects JSON-only outputs and is intentionally isolated behind provider methods.
+- LiteLLM integration expects JSON-only outputs and is intentionally isolated behind provider methods.
 - Current implementation creates DB schema at app startup (`create_all`) for MVP speed.
