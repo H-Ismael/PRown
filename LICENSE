@@ -1,21 +1,128 @@
-MIT License
+NON-COMMERCIAL EVALUATION LICENSE v0.1
 
-Copyright (c) 2026 H-Ismael
+Copyright (c) Halbade Ismail
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Licensor identity:
+Halbade Ismail
+GitHub: h-ismael
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+1. Definitions
+
+"Software" means the source code, object code, documentation, configuration,
+examples, and any related materials made available under this License.
+
+"Licensor" means Halbade Ismail.
+
+"You" means an individual or legal entity exercising permissions under this License.
+
+"Non-Commercial Use" means use solely for personal, educational, academic,
+research, review, evaluation, experimentation, or other purposes without any
+direct or indirect commercial advantage, compensation, revenue generation,
+business support, or production business use.
+
+"Commercial Use" includes, without limitation:
+(a) selling, licensing, sublicensing, leasing, or distributing the Software
+    or derivative works for a fee or other consideration;
+(b) using the Software or derivative works to provide a hosted or managed service,
+    including SaaS, API, platform, or consulting deliverable;
+(c) using the Software or derivative works in support of internal business operations,
+    revenue-generating activity, or commercial decision-making;
+(d) embedding, integrating, or deploying the Software or derivative works into any
+    product or service used for commercial purposes;
+(e) offering support, maintenance, or professional services based on the Software
+    for compensation;
+(f) any production use by or for a for-profit entity, except where the Licensor
+    has granted prior written permission.
+
+"Production Use" means any use of the Software beyond isolated internal evaluation
+or testing, including use in live, staging, customer-facing, operational, or
+business-critical environments.
+
+"Derivative Works" means modifications, adaptations, translations, enhancements,
+or other works based on the Software to the extent protected by applicable law.
+
+2. Limited License Grant
+
+Subject to the terms and conditions of this License, Licensor grants You a
+limited, revocable, non-exclusive, non-transferable, non-sublicensable license to:
+
+(a) view, download, clone, and copy the Software;
+(b) run the Software locally for Non-Commercial Use only;
+(c) modify the Software and create Derivative Works for Non-Commercial Use only.
+
+3. Restrictions
+
+You may not, without prior written permission from the Licensor:
+
+(a) use the Software or any Derivative Work for Commercial Use;
+(b) use the Software or any Derivative Work in Production Use;
+(c) offer the Software as a hosted, managed, or network-accessible service;
+(d) sublicense, relicense, sell, or commercially distribute the Software or any
+    Derivative Work;
+(e) redistribute the Software or Derivative Works in any form;
+(f) remove, alter, or obscure copyright, attribution, or license notices;
+(g) represent the Software as open source under any OSI-approved definition;
+(h) use the Licensor’s name, trademarks, or branding except for reasonable
+    attribution required by this License.
+
+4. Redistribution
+
+Redistribution of the Software or any Derivative Work, whether modified or
+unmodified, is prohibited unless the Licensor has granted prior written permission.
+
+5. Ownership
+
+The Software is licensed, not sold. Licensor retains all right, title, and
+interest in and to the Software, including all intellectual property rights.
+Except for the limited rights expressly granted under this License, no other
+rights are granted by implication, estoppel, or otherwise.
+
+6. Feedback
+
+If You provide suggestions, ideas, bug reports, or other feedback regarding the
+Software, Licensor may use such feedback without restriction and without any
+obligation to You.
+
+7. No Warranty
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR
+A PARTICULAR PURPOSE, TITLE, AND NON-INFRINGEMENT. THE ENTIRE RISK AS TO THE
+USE, QUALITY, AND PERFORMANCE OF THE SOFTWARE IS WITH YOU.
+
+8. Limitation of Liability
+
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, IN NO EVENT SHALL THE LICENSOR BE LIABLE
+FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR
+THE USE OR OTHER DEALINGS IN THE SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGES.
+
+9. Termination
+
+This License terminates automatically if You violate any term of this License.
+Upon termination, You must immediately cease all use of the Software and destroy
+all copies in Your possession or control, except where retention is required by law.
+
+10. Compliance and Commercial Licensing
+
+Any Commercial Use, Production Use, redistribution, or other use outside the
+scope of this License requires separate prior written permission from the Licensor.
+
+For licensing inquiries and permissions, contact the Licensor through GitHub:
+h-ismael
+
+11. Severability
+
+If any provision of this License is held unenforceable, the remaining provisions
+shall remain in full force and effect.
+
+12. Governing Law
+
+This License shall be governed by the laws of Singapore, excluding
+its conflict-of-laws principles.
+
+13. Acceptance
+
+By copying, accessing, using, modifying, or distributing the Software, You agree
+to be bound by this License.
