@@ -1,6 +1,9 @@
 # PRown - PR Comprehension Gate (MVP)
 
 Quality gate for GitHub pull requests that checks whether the PR author understands the code they are proposing.
+<p align="center">
+  <img src="ChatGPT Image Apr 29, 2026, 09_37_55 PM.png" alt="PRown" width="560" />
+</p>
 
 ## What this MVP does
 
@@ -29,6 +32,11 @@ Author UI /sessions/{id}/ui ---------> /sessions/{id}/answers
                                        -> GitHub check run + comment
                                        -> Postgres persistence
 ```
+
+<p align="center">
+  <img src="image(2).png" alt="PRown_arch" width="560" />
+</p>
+
 
 ## Repository layout
 
